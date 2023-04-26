@@ -9,6 +9,7 @@ const requestHandler= (req,res) =>{
     fs.readFile("message.txt",{encoding:"utf-8"},(err,data)=> {
       if(err){
         console.log(err);
+
       }
    
     res.write('<html>');
@@ -17,7 +18,8 @@ const requestHandler= (req,res) =>{
     res.write('<body><form action="/message" method="POST"><input type="text" name="message"><button type="submit">Send</button></form></body>');
   
     res.write('</html>');
-    return res.end();
+    
+      return res.end();
   })
 
 }
