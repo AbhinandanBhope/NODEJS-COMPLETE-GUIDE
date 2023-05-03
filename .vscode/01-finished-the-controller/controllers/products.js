@@ -1,8 +1,9 @@
-const products = [];
+const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
   res.render('add-product', {
     pageTitle: 'Add Product',
+    prods: [],
     path: '/admin/add-product',
     formsCSS: true,
     productCSS: true,
@@ -11,42 +12,39 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-  products.push({ title: req.body.title });
+  const product = new Product(req.body.title);
+  product.save();
   res.redirect('/');
 };
 
 exports.getProducts = (req, res, next) => {
-  res.render('shop', {
-    prods: products,
-    pageTitle: 'Shop',
-    path: '/',
-    hasProducts: products.length > 0,
-    activeShop: true,
-    productCSS: true
-  });
-};
-
-exports.getSuccess = (req, res, next) => {
-  res.render('success', {
-    prods: products,
-    pageTitle: 'success',
-    path: '/success',
-    
-    activeShop: true,
-    activeAddProduct: true,
-    productCSS: true
+  Product.fetchAll(products => {
+    res.render('shop', {
+      prods: products,
+      pageTitle: 'Shop',
+      path: '/',
+      hasProducts: products.length > 0,
+      activeShop: true,
+      productCSS: true
+    });
   });
 };
   
-  exports.getcontactus = (req, res, next) => {
-    res.render('contact', {
-      prods: products,
-      pageTitle: 'contact',
-      path: '/contact',
-      
-      activeShop: true,
-      activeAddProduct: true,
-      productCSS: true
-    });
-  };
 
+exports.getSuccess = (req, res, next) => {
+  res.render('success', {
+    pageTitle: 'success',
+    path: '/success',
+    activeShop: true,
+    activeAddProduct: true,
+  });
+};
+  
+exports.getcontactus = (req, res, next) => {
+  res.render('contact', {
+    pageTitle: 'contact',
+    path: '/contact',
+    activeShop: true,
+    activeAddProduct: true,
+  });
+};
