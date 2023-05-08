@@ -14,7 +14,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findById(prodId).then(([product]) => {
+  Product.findAll({Where:{id:prodId}}).then(product => {
     res.render('shop/product-detail', {
       product: product[0],
       pageTitle: product.title ,
@@ -29,7 +29,7 @@ exports.getProduct = (req, res, next) => {
   
 exports.getD = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.deleteById(prodId).then(() => {
+  Product.destroy({where:{id:prodId}}).then(() => {
     res.render('admin/new', {
       pageTitle: 'delete',
       
@@ -54,17 +54,17 @@ exports.getD = (req, res, next) => {
 
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll().then(([rows ,fieldData]) => {
+  Product.findAll().then(products => {
     res.render('shop/index', {
-      prods: rows,
+      prods: products,
       pageTitle: 'Shop',
       path: '/'
     });
-      
     
-  }).catch(err => 
-    console.log(err) ); 
-
+  }).catch((err) => {
+    console.log(err);
+  });
+  
   
  
   
